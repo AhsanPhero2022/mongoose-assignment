@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+
 import {
   Guardian,
   LocalGuardian,
@@ -9,21 +10,22 @@ import {
 const userNameSchema = new Schema<UserName>({
   firstName: {
     type: String,
-    required: true,
-  },
+    required: [true, 'First name is required'],
+   },
   middleName: {
     type: String,
   },
   lastName: {
     type: String,
     required: true,
+    
   },
 });
 
 const guardianSchema = new Schema<Guardian>({
   fatherName: {
     type: String,
-    required: true,
+    required: [true, 'First name is required'],
   },
   fatherOccupation: {
     type: String,
@@ -67,22 +69,48 @@ const localGuardianSchema = new Schema<LocalGuardian>({
 });
 
 const studentSchema = new Schema<Student>({
-  id: { type: String },
+  id: { type: String, required: true, unique: true },
   name: {
-    userNameSchema,
+    type: userNameSchema,
+    required: true,
   },
-  gender: ['male', 'female'],
+  gender: {
+    type: String,
+    enum: {
+      values: ['male', 'female', 'other'],
+      message: '{VALUE} is not valid',
+    },
+    required: true,
+  },
   dateOfBirth: { type: String },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   contactNo: { type: String, required: true },
   emergencyContact: { type: String, required: true },
-  bloodGroup: ['A+', 'A-', 'AB+', 'AB-', 'B+', 'B-', 'O+', 'O-'],
+  bloodGroup: {
+    type: String,
+    enum: ['A+', 'A-', 'AB+', 'AB-', 'B+', 'B-', 'O+', 'O-'],
+  },
   presentAddress: { type: String, required: true },
   permanentAddress: { type: String },
-  guardian: guardianSchema,
+  guardian: {
+    type: guardianSchema,
+    required: true,
+  },
 
-  localGuardian: localGuardianSchema,
+  localGuardian: {
+    type: localGuardianSchema,
+    required: true,
+  },
   profileImg: { type: String },
-  isActive: ['active', 'block'],
+  isActive: {
+    type: String,
+    enum: ['active', 'block'],
+    default: 'active',
+  },
 });
 
 export const StudentModel = model<Student>('Student', studentSchema);
