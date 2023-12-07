@@ -1,3 +1,4 @@
+
 import { userModel  } from '../user.model';
 
 
@@ -21,7 +22,7 @@ const deleteUser = async (userId: string) => {
 };
 
 const updateAnUser = async (userId: string, updateUser: typeof userModel) => {
-  const userExists = await userModel.findOne({ userId });
+  const userExists = await userModel.findOneAndUpdate({ userId });
 
   if (!userExists) {
     throw new Error('User not available');
@@ -80,7 +81,7 @@ const calculateTotalPriceDb = async (userId: string) => {
   }
 
   const calculateResult = await userModel.aggregate([
-    { $match: {userId: Number(userId) } },
+    { $match: {userId: parseInt(userId) } },
     { $unwind: '$order' },
     {
       $group: {
@@ -99,8 +100,8 @@ const calculateTotalPriceDb = async (userId: string) => {
         code: 404
     }
   }
-  const { totalPrice ,  } = calculateResult[0];
-  return { totalPrice };
+  const { totalPrice , orders } = calculateResult[0];
+  return { totalPrice, orders };
 };
 
 export const UserServices = {

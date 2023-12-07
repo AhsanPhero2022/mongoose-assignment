@@ -25,7 +25,7 @@ const userSchmea = new Schema<User, StaticModel>({
     required: true,
     unique: true,
   },
-  userName: {
+  username: {
     type: String,
     required: true,
     unique: true,

@@ -20,7 +20,7 @@ export interface Order {
 
 export interface User extends Document {
   userId: number;
-  userName: string;
+  username: string;
   password: string;
   fullName: FullName;
   age: string;
