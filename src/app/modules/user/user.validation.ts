@@ -19,7 +19,7 @@ const orderJoiSchema = Joi.object({
 
 export const userJoiSchema = Joi.object({
   userId: Joi.number().required(),
-  username: Joi.number().required(),
+  username: Joi.string().required(),
   password: Joi.string().required(),
   fullName: fullNameJoiSchema.required(),
   age: Joi.number().required(),
@@ -29,4 +29,5 @@ export const userJoiSchema = Joi.object({
   address: addressJoiSchema.required(),
   order: Joi.array().items(orderJoiSchema),
 });
+
 export default userJoiSchema;
